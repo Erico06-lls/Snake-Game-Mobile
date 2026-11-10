@@ -42,6 +42,12 @@ class SnakeGame extends FlameGame {
 
   double _moveTimer = 0;
   bool _gameOver = false;
+  double _gameOverTimer = 0;
+  bool _snakeVisible = true;
+  bool _gameOverOverlayShown = false;
+
+  static const double blinkInterval = 0.2;
+  static const double gameOverAnimationDuration = 1.2;
 
   static const double moveInterval = 0.18;
 
@@ -86,7 +92,21 @@ class SnakeGame extends FlameGame {
   void update(double dt) {
     super.update(dt);
 
-    if (_gameOver || columns <= 0 || rows <= 0) return;
+    if (columns <= 0 || rows <= 0) return;
+    if (_gameOver) {
+      _gameOverTimer += dt;
+      _snakeVisible = (_gameOverTimer / blinkInterval).floor().isEven;
+
+      if (_gameOverTimer >= gameOverAnimationDuration) {
+        _snakeVisible = true;
+
+        if (!_gameOverOverlayShown) {
+          overlays.add('GameOver');
+          _gameOverOverlayShown = true;
+        }
+      }
+      return;
+    }
 
     _moveTimer += dt;
 
@@ -107,7 +127,8 @@ class SnakeGame extends FlameGame {
 
       if (!moved) {
         _gameOver = true;
-        overlays.add('GameOver');
+        _gameOverTimer = 0;
+      _snakeVisible = true;
         return;
       }
       if (willGrow) {
@@ -142,6 +163,9 @@ class SnakeGame extends FlameGame {
 
     _moveTimer = 0;
     _gameOver = false;
+    _gameOverTimer = 0;
+    _snakeVisible = true;
+    _gameOverOverlayShown = false;
 
     final header = gameHeader;
     if (header != null) {
@@ -302,11 +326,13 @@ class SnakeGame extends FlameGame {
         cellSize: cellSize,
       );
 
-      snake.render(
-        canvas,
-        gridRect: gridRect,
-        cellSize: cellSize,
-      );
+      if (_snakeVisible) {
+        snake.render(
+          canvas,
+          gridRect: gridRect,
+          cellSize: cellSize,
+        );
+      }
 
       canvas.drawRect(
         frameRect.deflate(borderWidth / 2),

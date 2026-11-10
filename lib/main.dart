@@ -1,22 +1,13 @@
 
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'game/snake_game.dart';
 import 'screens/game_over_page.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: Color(0xFF8BA34F),
-      statusBarIconBrightness: Brightness.dark,
-      systemNavigationBarColor: Color(0xFF8BA34F),
-      systemNavigationBarIconBrightness: Brightness.dark,
-      systemNavigationBarDividerColor: Color(0xFF8BA34F),
-    ),
-  );
+
   runApp(const SnakeApp());
 }
 
