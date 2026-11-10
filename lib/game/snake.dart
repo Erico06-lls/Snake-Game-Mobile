@@ -50,8 +50,8 @@ class Snake {
   }
 
   void reset(int columns, int rows) {
+    direction = const Point<int>(1, 0);
     body.clear();
-
     if (columns < 3 || rows < 1) return;
 
     final headX = columns ~/ 2;

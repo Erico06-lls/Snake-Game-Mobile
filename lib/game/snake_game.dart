@@ -107,6 +107,8 @@ class SnakeGame extends FlameGame {
 
       if (!moved) {
         _gameOver = true;
+        overlays.add('GameOver');
+        return;
       }
       if (willGrow) {
         score ++;
@@ -125,6 +127,29 @@ class SnakeGame extends FlameGame {
         );
       }
     }
+  }
+
+  void restart() {
+    if (columns <= 0 || rows <= 0) return;
+    score = 0;
+    snake.reset(columns, rows);
+
+    food.spawn(
+      columns: columns,
+      rows: rows,
+      snakeBody: snake.body,
+    );
+
+    _moveTimer = 0;
+    _gameOver = false;
+
+    final header = gameHeader;
+    if (header != null) {
+      header.score = score;
+      header.bestScore = bestScore;
+    }
+
+    overlays.remove('GameOver');
   }
 
   @override
