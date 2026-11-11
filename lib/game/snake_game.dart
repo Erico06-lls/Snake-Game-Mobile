@@ -10,6 +10,7 @@ import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 class SnakeGame extends FlameGame {
+  SnakeGame({this.bestScore = 0});
   double headerHeight = 50;
   double controlsHeight = 140;
 
@@ -30,7 +31,7 @@ class SnakeGame extends FlameGame {
   GameHeader? gameHeader;
 
   int score = 0;
-  int bestScore = 0;
+  int bestScore;
 
   int _lastColumns = 0;
   int _lastRows = 0;
