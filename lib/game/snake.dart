@@ -12,14 +12,12 @@ class Snake {
 
   bool move({required int columns, required int rows, bool grow = false,}) {
     if (body.isEmpty) return false;
-
     final head = body.first;
-
     final nextHead = Point<int>(
       head.x + direction.x,
       head.y + direction.y,
     );
-
+    // Collision avec les murs
     if (nextHead.x < 0 ||
         nextHead.x >= columns ||
         nextHead.y < 0 ||
@@ -27,12 +25,22 @@ class Snake {
       return false;
     }
 
+    // Colllision avec le corps du serpent
+    var index = 0;
+    for (final segment in body){
+      if(!grow && index == body.length - 1) {
+        index++;
+        continue;
+      }
+      if(nextHead == segment) {
+        return false;
+      }
+      index++;
+    }
     body.addFirst(nextHead);
-
     if (!grow) {
       body.removeLast();
     }
-
     return true;
   }
 

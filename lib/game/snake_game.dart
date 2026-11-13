@@ -100,7 +100,6 @@ class SnakeGame extends FlameGame {
 
       if (_gameOverTimer >= gameOverAnimationDuration) {
         _snakeVisible = true;
-
         if (!_gameOverOverlayShown) {
           overlays.add('GameOver');
           _gameOverOverlayShown = true;
@@ -113,7 +112,6 @@ class SnakeGame extends FlameGame {
 
     if (_moveTimer >= moveInterval) {
       _moveTimer -= moveInterval;
-
       final head = snake.body.first;
       final nextHead = math.Point<int>(
         head.x + snake.direction.x,
@@ -129,7 +127,7 @@ class SnakeGame extends FlameGame {
       if (!moved) {
         _gameOver = true;
         _gameOverTimer = 0;
-      _snakeVisible = true;
+        _snakeVisible = true;
         return;
       }
       if (willGrow) {

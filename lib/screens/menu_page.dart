@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 
 import 'snake_game_screen.dart';
+import '../services/score_storage.dart';
 
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
@@ -23,13 +24,15 @@ class _MenuPageState extends State<MenuPage> {
       ),
     );
 
-    if (!mounted || result == null) return;
+    if (result != null) {
+      await ScoreStorage.saveHighScore(result);
 
-    setState(() {
-      if (result > highScore) {
-        highScore = result;
-      }
-    });
+      if(!mounted) return;
+
+      setState(() {
+        highScore = result > highScore ? result : highScore;
+      });
+    }
   }
 
   void _showDifficultyMessage() {
@@ -38,6 +41,20 @@ class _MenuPageState extends State<MenuPage> {
         content: Text('Le choix de difficulté sera disponible bientôt.'),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadHighScore();
+  }
+
+  Future<void> _loadHighScore() async {
+    final savedScore = await ScoreStorage.loadHighScore();
+    if (!mounted) return;
+    setState(() {
+      highScore = savedScore;
+    });
   }
 
   @override
